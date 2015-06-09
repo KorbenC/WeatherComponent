@@ -1,0 +1,65 @@
+<aura:component controller="WeatherController" implements="force:appHostable">
+
+    <!--
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'/>
+-->
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <!-- The user's latitude and longitude automatically obtained by the device's GPS or by the browser -->
+    <aura:attribute name="latitude" type="Decimal"/>
+    <aura:attribute name="longitude" type="Decimal"/>
+    
+    <!-- Search location manually entered by the user -->
+    <aura:attribute name="searchKey" type="String"/>
+    
+    <!-- The current weather and forecast objects returned by the WeatherUnderground service -->
+    <aura:attribute name="currentWeather" type="Object"/>
+    <aura:attribute name="forecast" type="Object"/>
+
+    <!-- message -->
+    <aura:attribute name="message" type="String"/>
+	<aura:attribute name="visible" type="Boolean"/>
+    <div>
+        <div class="search-bar">
+            <ui:inputText placeholder="Current location" value="{!v.searchKey}"/>
+	        <button onclick="{!c.searchHandler}">Search</button>
+        </div>
+        <div class="toggle-temp">
+            <label class="toggle-check">
+                <ui:inputCheckbox value="{!v.visible}" class="toggle"/>
+                <span class="toggle-check-text"></span>
+            </label>
+        </div>
+        <img src="{!v.currentWeather.icon_url}"></img>
+        <div class="location">{!v.currentWeather.display_location.full}</div>
+        <div class="description">{!v.currentWeather.weather}</div>
+        <aura:renderIf isTrue="{!v.visible}">
+        	<div class="temperature deg">{!v.currentWeather.temp_f}</div>
+            <aura:set attribute="else">
+                        <div class="temperature deg">{!v.currentWeather.temp_c}</div>
+            </aura:set>
+        </aura:renderIf>
+        <table>
+			<aura:iteration items="{!v.forecast.simpleforecast.forecastday}" var="item">
+            <tr valign="middle">
+                <td>{!item.date.weekday}</td>
+                <td><img src="{!item.icon_url}"></img></td>
+                <td>{!item.conditions}</td>
+                <aura:renderIf isTrue="{!v.visible}">
+                	<td class="right-align deg">{!item.high.fahrenheit}</td>
+                	<td class="right-align subtle deg">{!item.low.fahrenheit}</td>
+                    <aura:set attribute="else">
+                    	<td class="right-align deg">{!item.high.celsius}</td>
+                		<td class="right-align subtle deg">{!item.low.celsius}</td>
+                    </aura:set>
+                </aura:renderIf>
+
+			</tr>
+    	    </aura:iteration>
+		</table>
+        <div class="message">{!v.message}</div>
+        <img class="logo" src="http://icons.wxug.com/logos/PNG/wundergroundLogo_4c_horz.png"/>
+    </div>
+	
+</aura:component>
