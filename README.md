@@ -1,3 +1,4 @@
+![Weather](https://dl.dropboxusercontent.com/u/18770429/IMG_0212.PNG)
 # WeatherComponent
 This Salesforce1 Lightning Component was forked from [Christophe Coenraets](https://developer.salesforce.com/blogs/developer-relations/author/ccoenraets). I improved the component by adding an option for the user to choose Fahrenheit or Celsius via toggle.
 
